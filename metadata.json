@@ -1,0 +1,6 @@
+{
+  "name": "Swasthya Setu",
+  "description": "Digital Health Mission (ABHA) patient intake kiosk and clinical onboarding application with multi-lingual voice, OCR document scanning, AYUSH consultation, and token generation.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
