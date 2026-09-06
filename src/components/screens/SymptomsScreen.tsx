@@ -19,6 +19,17 @@ interface SymptomsScreenProps {
   onResetSession: () => void;
 }
 
+function looksLikeSymptomText(raw: string): boolean {
+  const lower = raw.toLowerCase();
+  const keywords = [
+    'pain', 'hurt', 'hurts', 'ache', 'aching', 'fever', 'cough', 'dizzy', 'dizziness',
+    'vomit', 'vomiting', 'nausea', 'sick', 'weakness', 'fatigue', 'swelling', 'chills',
+    'cold', 'rash', 'stomach', 'chest', 'eye', 'head', 'throat', 'breath', 'burning',
+    'leg', 'knee', 'arm', 'back', 'foot', 'shoulder'
+  ];
+  return keywords.some((k) => lower.includes(k));
+}
+
 function extractNameFromText(raw: string): string {
   let text = raw.trim();
   text = text.replace(/^(my name is|i am|this is|name is|i'm)\s+/i, '');
@@ -171,8 +182,8 @@ export const SymptomsScreen: React.FC<SymptomsScreenProps> = ({
     };
     onAddMessage(userMsg);
 
-    // 1. Intro Question 1: Patient Full Name
-    if (!patientName.trim()) {
+    // 1. Intro Question 1: Patient Full Name (skip if user typed symptoms)
+    if (!patientName.trim() && !looksLikeSymptomText(text)) {
       const extractedName = extractNameFromText(text);
       onUpdatePatientName(extractedName);
 
@@ -188,8 +199,8 @@ export const SymptomsScreen: React.FC<SymptomsScreenProps> = ({
       return;
     }
 
-    // 2. Intro Question 2: Date of Birth
-    if (!dob.trim()) {
+    // 2. Intro Question 2: Date of Birth (skip if user typed symptoms)
+    if (!dob.trim() && !looksLikeSymptomText(text)) {
       const extractedDob = extractDobFromText(text);
       onUpdateDob(extractedDob);
 
@@ -205,7 +216,7 @@ export const SymptomsScreen: React.FC<SymptomsScreenProps> = ({
       return;
     }
 
-    // 3. Question 3+: Symptoms Description via Gemini API
+    // 3. Question 3+ or direct symptom input: Symptoms Description via Gemini API
     setIsExtracting(true);
     try {
       const response = await fetch('/api/extract-symptoms', {
@@ -214,6 +225,13 @@ export const SymptomsScreen: React.FC<SymptomsScreenProps> = ({
         body: JSON.stringify({ text, language }),
       });
       const data = await response.json();
+      console.log('[SymptomsScreen] Raw API response from /api/extract-symptoms:', data);
+      if (data.source === 'gemini') {
+        console.log(`[SymptomsScreen] Gemini (${data.modelUsed}) Raw Response:`, data.rawGeminiResponse);
+      } else {
+        console.warn('[SymptomsScreen] Fallback was used:', data.fallbackWarning || 'Local fallback');
+      }
+
       const extractedSymptoms: string[] = Array.isArray(data.symptoms) ? data.symptoms : [];
 
       const newlyAdded: string[] = [];
@@ -247,10 +265,18 @@ export const SymptomsScreen: React.FC<SymptomsScreenProps> = ({
       // Bot acknowledge what was extracted specifically
       let ackText = '';
       if (newlyAdded.length > 0) {
-        if (language === 'hi') {
-          ackText = `दर्ज किया गया: ${newlyAdded.join(', ')}। क्या आप कुछ और बताना चाहते हैं?`;
+        if (!patientName.trim()) {
+          ackText = language === 'hi'
+            ? `दर्ज किया गया: ${newlyAdded.join(', ')}। क्या आप अपना पूरा नाम भी बता सकते हैं?`
+            : `Noted: ${newlyAdded.join(', ')}. Could you also tell me your full name?`;
+        } else if (!dob.trim()) {
+          ackText = language === 'hi'
+            ? `दर्ज किया गया: ${newlyAdded.join(', ')}। आपकी जन्मतिथि या आयु क्या है?`
+            : `Noted: ${newlyAdded.join(', ')}. What is your date of birth or age?`;
         } else {
-          ackText = `Noted: ${newlyAdded.join(', ')}. Anything else?`;
+          ackText = language === 'hi'
+            ? `दर्ज किया गया: ${newlyAdded.join(', ')}। क्या आप कुछ और बताना चाहते हैं?`
+            : `Noted: ${newlyAdded.join(', ')}. Anything else?`;
         }
       } else {
         if (language === 'hi') {
