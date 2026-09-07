@@ -50,7 +50,7 @@ export const TopBar: React.FC<TopBarProps> = ({
       <div className="flex items-center gap-3">
         {currentStep !== 'welcome' && currentStep !== 'token' && (
           <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant border border-outline-variant">
-            Step {stepNumber} of {totalSteps}
+            {t.stepWord} {stepNumber} {t.ofWord} {totalSteps}
           </span>
         )}
         <button

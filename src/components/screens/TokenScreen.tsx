@@ -49,8 +49,7 @@ export const TokenScreen: React.FC<TokenScreenProps> = ({
         {t.intakeCompleteTitle}
       </h2>
       <p className="text-base sm:text-lg text-on-surface-variant max-w-md mb-8">
-        Your clinical summary has been sent directly to{' '}
-        <strong className="text-on-surface">{doctorName || "Dr. Sharma's"}</strong> desk.
+        {t.intakeCompleteSub}
       </p>
 
       {/* Styled Ticket / Token Card */}

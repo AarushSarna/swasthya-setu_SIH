@@ -360,7 +360,15 @@ export const SymptomsScreen: React.FC<SymptomsScreenProps> = ({
           title="Reset session and ask again from scratch"
         >
           <span className="material-symbols-outlined text-sm">restart_alt</span>
-          <span className="hidden sm:inline">{language === 'hi' ? 'सत्र रीसेट करें' : 'Reset Session'}</span>
+          <span className="hidden sm:inline">
+            {language === 'hi'
+              ? 'सत्र रीसेट करें'
+              : language === 'ta'
+              ? 'மீட்டமை'
+              : language === 'bn'
+              ? 'রিসেট সেশন'
+              : 'Reset Session'}
+          </span>
         </button>
       </div>
 
@@ -370,17 +378,39 @@ export const SymptomsScreen: React.FC<SymptomsScreenProps> = ({
           <div className="flex items-center gap-3">
             <span className="material-symbols-outlined text-primary text-base">person</span>
             <span>
-              <strong>{language === 'hi' ? 'मरीज' : 'Patient'}:</strong> {patientName || '—'}
+              <strong>{t.patientName}:</strong> {patientName || '—'}
             </span>
             {dob && (
               <span>
-                • <strong>{language === 'hi' ? 'जन्मतिथि' : 'DOB'}:</strong> {dob}
+                • <strong>{t.dateOfBirth}:</strong> {dob}
               </span>
             )}
           </div>
           <span className="text-[11px] text-primary font-semibold flex items-center gap-1">
             <span className="material-symbols-outlined text-xs fill">check_circle</span>
-            {language === 'hi' ? 'सक्रिय सत्र' : 'Active Session'}
+            {language === 'hi'
+              ? 'सक्रिय सत्र'
+              : language === 'ta'
+              ? 'செயலில் உள்ள அமர்வு'
+              : language === 'bn'
+              ? 'সক্রিয় সেশন'
+              : 'Active Session'}
+          </span>
+        </div>
+      )}
+
+      {/* Tamil / Bengali Non-intrusive Chat Language Note */}
+      {(language === 'ta' || language === 'bn') && (
+        <div
+          id="symptoms-chat-language-note"
+          className="mb-3 px-3.5 py-2.5 rounded-xl bg-surface-container-high border border-primary/30 flex items-center justify-between text-xs text-on-surface animate-fade-in gap-2 shadow-xs"
+        >
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary text-base">info</span>
+            <span className="font-medium text-xs">{t.conversationLanguageNote}</span>
+          </div>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-md flex-shrink-0 border border-primary/20">
+            EN / HI
           </span>
         </div>
       )}
@@ -485,7 +515,7 @@ export const SymptomsScreen: React.FC<SymptomsScreenProps> = ({
                 {isSelected && (
                   <span className="material-symbols-outlined text-xs fill">check</span>
                 )}
-                <span>{sym}</span>
+                <span>{t.symptomsLabels?.[sym] || sym}</span>
               </button>
             );
           })}
@@ -498,7 +528,13 @@ export const SymptomsScreen: React.FC<SymptomsScreenProps> = ({
           <div className="flex items-center gap-1.5 mb-2">
             <span className="material-symbols-outlined text-primary text-sm">auto_awesome</span>
             <p className="text-xs font-semibold text-primary uppercase tracking-wider">
-              {language === 'hi' ? 'अतिरिक्त दर्ज लक्षण (AI द्वारा पहचाने गए):' : 'Additional Captured Symptoms (AI Extracted):'}
+              {language === 'hi'
+                ? 'अतिरिक्त दर्ज लक्षण (AI द्वारा पहचाने गए):'
+                : language === 'ta'
+                ? 'கூடுதல் பதிவு செய்யப்பட்ட அறிகுறிகள் (AI பிரித்தெடுத்தது):'
+                : language === 'bn'
+                ? 'অতিরিক্ত রেকর্ডকৃত উপসর্গ (AI দ্বারা সংগৃহীত):'
+                : 'Additional Captured Symptoms (AI Extracted):'}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -509,12 +545,20 @@ export const SymptomsScreen: React.FC<SymptomsScreenProps> = ({
                 className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary/15 text-primary border border-primary/30 flex items-center gap-1.5 shadow-xs"
               >
                 <span className="material-symbols-outlined text-xs">check_circle</span>
-                <span>{customSym}</span>
+                <span>{t.symptomsLabels?.[customSym] || customSym}</span>
                 <button
                   type="button"
                   onClick={() => onToggleSymptom(customSym)}
                   className="ml-1 text-primary/70 hover:text-primary hover:bg-primary/20 rounded-full p-0.5"
-                  title={language === 'hi' ? 'हटाएं' : 'Remove'}
+                  title={
+                    language === 'hi'
+                      ? 'हटाएं'
+                      : language === 'ta'
+                      ? 'நீக்கு'
+                      : language === 'bn'
+                      ? 'মুছে ফেলুন'
+                      : 'Remove'
+                  }
                 >
                   <span className="material-symbols-outlined text-xs">close</span>
                 </button>

@@ -95,7 +95,7 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({
               }}
               className="w-full py-4 px-8 rounded-full bg-primary text-on-primary font-extrabold text-base hover:bg-primary-container shadow-lg hover:shadow-primary/20 transition-all flex items-center justify-center gap-2 active:scale-95"
             >
-              <span>View Queue Token</span>
+              <span>{t.viewQueueToken}</span>
               <span className="material-symbols-outlined text-xl">arrow_forward</span>
             </button>
           </div>
@@ -189,7 +189,7 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({
                       </button>
                     </div>
 
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-2">
                       {state.symptoms.length > 0 ? (
                         state.symptoms.map((sym, idx) => (
                           <span
@@ -206,11 +206,6 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({
                           {t.noCurrentSymptoms}
                         </span>
                       )}
-                    </div>
-
-                    <div className="text-xs text-on-surface-variant flex items-center gap-2">
-                      <span className="font-bold text-on-surface">{t.duration}:</span>
-                      <span>{state.symptomDuration || (state.language === 'hi' ? '3 दिन' : '3 Days')}</span>
                     </div>
                   </div>
                 </div>
@@ -229,14 +224,10 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({
                           </span>
                           <div>
                             <h3 className="font-bold text-base text-on-surface leading-snug">
-                              {state.language === 'hi'
-                                ? `पिछला चिकित्सा इतिहास (अपलोड किए गए दस्तावेज़ों से${docDate ? ` - ${docDate}` : ''})`
-                                : `Medical History (from uploaded documents${docDate ? ` - ${docDate}` : ''})`}
+                              {t.medicalHistoryCardTitle}{docDate ? ` (${docDate})` : ''}
                             </h3>
                             <p className="text-[11px] text-amber-600 dark:text-amber-400 font-medium mt-0.5">
-                              {state.language === 'hi'
-                                ? `दस्तावेज़ रिकॉर्ड${docDate ? ` (${docDate})` : ''} • वर्तमान शिकायत नहीं`
-                                : `Historical findings from document${docDate ? ` (${docDate})` : ''} • Not current complaints`}
+                              {t.medicalHistorySub}{docDate ? ` • ${docDate}` : ''}
                             </p>
                           </div>
                         </div>
@@ -406,7 +397,13 @@ export const SummaryScreen: React.FC<SummaryScreenProps> = ({
 
                     {state.documents.length === 0 ? (
                       <span className="text-xs text-on-surface-variant italic">
-                        {state.language === 'hi' ? 'कोई दस्तावेज़ संलग्न नहीं है' : 'No documents attached'}
+                        {state.language === 'hi'
+                          ? 'कोई दस्तावेज़ संलग्न नहीं है'
+                          : state.language === 'ta'
+                          ? 'ஆவணங்கள் எதுவும் இணைக்கப்படவில்லை'
+                          : state.language === 'bn'
+                          ? 'কোনো নথি সংযুক্ত নেই'
+                          : 'No documents attached'}
                       </span>
                     ) : (
                       <div className="flex items-center gap-3 overflow-x-auto pb-1">

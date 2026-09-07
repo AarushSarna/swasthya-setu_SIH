@@ -7,7 +7,7 @@ export type StepId =
   | 'summary' 
   | 'token';
 
-export type LanguageCode = 'en' | 'hi';
+export type LanguageCode = 'en' | 'hi' | 'ta' | 'bn';
 
 export interface LanguageOption {
   code: LanguageCode;

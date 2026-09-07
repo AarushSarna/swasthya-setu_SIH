@@ -17,6 +17,16 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
 }) => {
   const t = TRANSLATIONS[language];
 
+  const stepLabels: Record<StepId, string> = {
+    welcome: t.stepWelcome,
+    identity: t.stepIdentity,
+    symptoms: t.stepSymptoms,
+    ayush: t.stepAyush,
+    documents: t.stepDocuments,
+    summary: t.stepSummary,
+    token: t.stepToken,
+  };
+
   return (
     <aside
       id="side-nav-bar"
@@ -61,7 +71,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                 >
                   {step.icon}
                 </span>
-                <span className="text-base font-medium flex-1">{step.label}</span>
+                <span className="text-base font-medium flex-1 truncate">{stepLabels[step.id] || step.label}</span>
                 {isActive && (
                   <span className="w-2 h-2 rounded-full bg-on-primary-container animate-pulse" />
                 )}

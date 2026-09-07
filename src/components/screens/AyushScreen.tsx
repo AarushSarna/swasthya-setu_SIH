@@ -32,7 +32,7 @@ export const AyushScreen: React.FC<AyushScreenProps> = ({
       desc: t.vataDesc,
       icon: 'air',
       colorClass: 'text-sky-300',
-      sublabel: 'Vata Dominant',
+      sublabel: t.vataSublabel,
     },
     {
       id: 'pitta',
@@ -40,7 +40,7 @@ export const AyushScreen: React.FC<AyushScreenProps> = ({
       desc: t.pittaDesc,
       icon: 'local_fire_department',
       colorClass: 'text-amber-400',
-      sublabel: 'Pitta Dominant',
+      sublabel: t.pittaSublabel,
     },
     {
       id: 'kapha',
@@ -48,7 +48,7 @@ export const AyushScreen: React.FC<AyushScreenProps> = ({
       desc: t.kaphaDesc,
       icon: 'water_drop',
       colorClass: 'text-teal-300',
-      sublabel: 'Kapha Dominant',
+      sublabel: t.kaphaSublabel,
     },
     {
       id: 'mixed',
@@ -56,7 +56,7 @@ export const AyushScreen: React.FC<AyushScreenProps> = ({
       desc: t.mixedDesc,
       icon: 'join_inner',
       colorClass: 'text-purple-300',
-      sublabel: 'Tridoshic / Mixed',
+      sublabel: t.mixedSublabel,
     },
   ];
 
@@ -65,41 +65,6 @@ export const AyushScreen: React.FC<AyushScreenProps> = ({
       id="ayush-screen"
       className="flex flex-col flex-1 w-full max-w-4xl mx-auto px-4 md:px-8 py-6 md:py-8 pb-28 md:pb-20"
     >
-      {/* Top Consultation Type Segmented Toggle */}
-      <div className="flex justify-center sm:justify-start mb-6">
-        <div className="inline-flex p-1 rounded-2xl bg-surface-container border border-outline-variant">
-          <button
-            id="tab-modern-consult"
-            onClick={() => {
-              playTapTone(420, 0.04);
-              onUpdateAyush({ consultationType: 'modern' });
-            }}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              ayush.consultationType === 'modern'
-                ? 'bg-surface-container-high text-on-surface shadow-sm'
-                : 'text-on-surface-variant hover:text-on-surface'
-            }`}
-          >
-            {t.modernConsultation}
-          </button>
-          <button
-            id="tab-ayush-consult"
-            onClick={() => {
-              playTapTone(500, 0.04);
-              onUpdateAyush({ consultationType: 'ayush' });
-            }}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
-              ayush.consultationType === 'ayush'
-                ? 'bg-primary text-on-primary shadow-sm'
-                : 'text-on-surface-variant hover:text-on-surface'
-            }`}
-          >
-            <span className="material-symbols-outlined text-sm">spa</span>
-            <span>{t.ayushConsultation}</span>
-          </button>
-        </div>
-      </div>
-
       {/* Header & Subtitle */}
       <div className="mb-6">
         <p className="text-xs uppercase tracking-widest text-primary font-bold mb-1">
@@ -155,9 +120,9 @@ export const AyushScreen: React.FC<AyushScreenProps> = ({
               </div>
 
               <div>
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
                   <h3 className="text-lg font-bold text-on-surface">{card.title}</h3>
-                  <span className="text-[10px] uppercase font-bold text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">
+                  <span className="text-[10px] uppercase font-bold text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded whitespace-nowrap">
                     {card.sublabel}
                   </span>
                 </div>
@@ -175,9 +140,9 @@ export const AyushScreen: React.FC<AyushScreenProps> = ({
         <span className="material-symbols-outlined text-primary text-xl mt-0.5">
           healing
         </span>
-        <div className="text-xs text-on-surface-variant">
-          <strong className="text-on-surface font-semibold">Integrative AYUSH Clinical Record:</strong>{' '}
-          This lifestyle information helps your physician evaluate metabolic Agni, Dhatu nutrition, and customize holistic prescriptions safely alongside modern medication.
+        <div className="text-xs text-on-surface-variant leading-relaxed">
+          <strong className="text-on-surface font-semibold">{t.ayushNoticeTitle}</strong>{' '}
+          {t.ayushNoticeText}
         </div>
       </div>
 
